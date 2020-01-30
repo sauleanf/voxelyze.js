@@ -16,8 +16,19 @@ class Voxelyze : public Napi::ObjectWrap<Voxelyze> {
   Napi::Value materialCount(const Napi::CallbackInfo& info);
   Napi::Value addMaterial(const Napi::CallbackInfo& info);
   Napi::Value setVoxel(const Napi::CallbackInfo& info);
+  Napi::Value voxelCount(const Napi::CallbackInfo& info);
+  void doLinearSolve(const Napi::CallbackInfo& info);
+  void doTimeStep(const Napi::CallbackInfo& info);
+  void setVoxelSize(const Napi::CallbackInfo& info);
+	Napi::Value getVoxelSize(const Napi::CallbackInfo& info);
+  Napi::Value linkCount(const Napi::CallbackInfo& info);
+  void enableFloor(const Napi::CallbackInfo& info);
+  Napi::Value isFloorEnabled(const Napi::CallbackInfo& info);
+  void setGravity(const Napi::CallbackInfo& info);
+  Napi::Value getGravity(const Napi::CallbackInfo& info);
+  void getVoxel(const Napi::CallbackInfo& info);
 
-  CVoxelyze voxelyze;
+  CVoxelyze* voxelyze;
 };
 
 #endif

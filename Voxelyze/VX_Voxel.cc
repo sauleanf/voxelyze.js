@@ -150,11 +150,11 @@ Vec3D<float> CVX_Voxel::externalMoment() {
   return returnMoment;
 }
 
-Vec3D<float> CVX_Voxel::cornerPosition(int corner) const {
+Vec3D<float> CVX_Voxel::cornerPosition(voxelCorner corner) const {
   return (Vec3D<float>)pos + orient.RotateVec3D(cornerOffset(corner));
 }
 
-Vec3D<float> CVX_Voxel::cornerOffset(int corner) const {
+Vec3D<float> CVX_Voxel::cornerOffset(voxelCorner corner) const {
   Vec3D<> strains;
   for (int i = 0; i < 3; i++) {
     bool posLink = corner & (1 << (2 - i)) ? true : false;
