@@ -2,7 +2,6 @@
   "name": "Voxelyze.js",
   "version": "0.0.0",
   "description": "Node.js Bindings for Voxelyze",
-  "main": "Voxelyze.js",
   "private": true,
   "gypfile": true,
   "dependencies": {
@@ -11,9 +10,13 @@
   },
   "scripts": {
     "build": "node-gyp configure --msvs_version=2019 && node-gyp build",
-    "test": "jest"
+    "test": "jest",
+    "visual": "webpack-dev-server"
   },
   "devDependencies": {
-    "jest": "^25.1.0"
+    "jest": "^25.1.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.2"
   }
 }
