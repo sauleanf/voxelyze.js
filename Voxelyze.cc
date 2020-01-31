@@ -1,8 +1,7 @@
-#include "voxelyze.h"
-#include <iostream>
-#include "voxelHelper.h"
+#include "Voxelyze.h"
+#include "VoxelHelper.h"
 #include "materialHelper.h"
-#include <string>
+#include <iostream>
 
 Napi::FunctionReference Voxelyze::constructor;
 
@@ -74,7 +73,7 @@ Napi::Value Voxelyze::setVoxel(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(env, "Wrong number of arguments")
             .ThrowAsJavaScriptException();
   }
-  int index;
+  int index = 0;
   if(info[0].IsNumber()) {
     index = info[0].As<Napi::Number>().Int32Value();
   } else if (info[0].IsObject() && info[0].ToObject().Has("index")) {
@@ -82,6 +81,7 @@ Napi::Value Voxelyze::setVoxel(const Napi::CallbackInfo& info) {
   } else {
     Napi::TypeError::New(env, "First argument has be either an Object with the field index set or an integer")
     .ThrowAsJavaScriptException();
+    return env.Null();
   }
   float x = info[1].As<Napi::Number>().FloatValue();
   float y = info[2].As<Napi::Number>().FloatValue();
@@ -108,12 +108,10 @@ void Voxelyze::doLinearSolve(const Napi::CallbackInfo& info) {
 }
 
 void Voxelyze::doTimeStep(const Napi::CallbackInfo& info) {
-  float dt;
-  if(info.Length() == 0) {
-    dt = -1.0f;
-  } else if(info.Length() == 1) {
+  float dt = -1.0f;
+  if(info.Length() == 1) {
     dt = info[0].As<Napi::Number>().FloatValue();
-  } else {
+  } else if(info.Length() == 0) {
     Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
   }
 
@@ -183,6 +181,5 @@ void Voxelyze::getVoxel(const Napi::CallbackInfo& info) {
 }
 
 void Voxelyze::saveJSON(const Napi::CallbackInfo& info) {
-  std::string name = info[0].ToString();
-  voxelyze->saveJSON(name.c_str());
+  voxelyze->saveJSON(info[0].As<Napi::String>().Utf8Value().c_str());
 }
