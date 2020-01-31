@@ -11,6 +11,44 @@ void setForce(const Napi::CallbackInfo& info) {
   voxel->external()->setForce(x, y, z);
 }
 
+Napi::Value getVertices(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+
+  Napi::Array vertices = Napi::Array::New(info.Env(), 2);
+
+  Napi::Array topVertices = Napi::Array::New(info.Env(), 4);
+  Napi::Array bottomVertices = Napi::Array::New(info.Env(), 4);
+  Vec3D<float> cornerPosition;
+
+  for(int i = 0; i < 4; i++) {
+    Napi::Array vertexCoordinates = Napi::Array::New(info.Env(), 3);
+
+    cornerPosition = voxel->cornerPosition((CVX_Voxel::voxelCorner) i);
+
+    vertexCoordinates[(uint32_t) 0] = Napi::Number::New(env, cornerPosition.x);
+    vertexCoordinates[(uint32_t) 1] = Napi::Number::New(env, cornerPosition.y);
+    vertexCoordinates[(uint32_t) 2] = Napi::Number::New(env, cornerPosition.z);
+
+    topVertices[(uint32_t) i] = vertexCoordinates;
+
+    cornerPosition = voxel->cornerPosition((CVX_Voxel::voxelCorner) (i + 4));
+
+    vertexCoordinates = Napi::Array::New(info.Env(), 3);
+
+    vertexCoordinates[(uint32_t) 0] = Napi::Number::New(env, cornerPosition.x);
+    vertexCoordinates[(uint32_t) 1] = Napi::Number::New(env, cornerPosition.y);
+    vertexCoordinates[(uint32_t) 2] = Napi::Number::New(env, cornerPosition.z);
+
+    bottomVertices[(uint32_t) i] = vertexCoordinates;
+  }
+
+  vertices[(uint32_t) 0] = topVertices;
+  vertices[(uint32_t) 1] = bottomVertices;
+
+  return vertices;
+}
+
 Napi::Value getForce(const Napi::CallbackInfo& info) {
   CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
 
@@ -67,6 +105,12 @@ void setVoxelObjectProperities(CVX_Voxel* voxel, Napi::Env& env, Napi::Object& v
       voxelObject,
       "getForce",
       getForce,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "getVertices",
+      getVertices,
       napi_property_attributes::napi_default,
       reinterpret_cast<void*>(voxel))
   });
