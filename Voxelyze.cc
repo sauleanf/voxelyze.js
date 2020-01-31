@@ -9,24 +9,23 @@ Napi::Object Voxelyze::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
   Napi::Function func =
-      DefineClass(env,
-                  "Voxelyze",
-                  {
-                    InstanceMethod("materialCount", &Voxelyze::materialCount),
-                    InstanceMethod("addMaterial", &Voxelyze::addMaterial),
-                    InstanceMethod("setVoxel", &Voxelyze::setVoxel),
-                    InstanceMethod("getVoxelSize", &Voxelyze::getVoxelSize),
-                    InstanceMethod("setVoxelSize", &Voxelyze::setVoxelSize),
-                    InstanceMethod("voxelCount", &Voxelyze::voxelCount),
-                    InstanceMethod("doLinearSolve", &Voxelyze::doLinearSolve),
-                    InstanceMethod("doTimeStep", &Voxelyze::doTimeStep),
-                    InstanceMethod("linkCount", &Voxelyze::linkCount),
-                    InstanceMethod("isFloorEnabled", &Voxelyze::isFloorEnabled),
-                    InstanceMethod("enableFloor", &Voxelyze::enableFloor),
-                    InstanceMethod("getGravity", &Voxelyze::getGravity),
-                    InstanceMethod("setGravity", &Voxelyze::setGravity),
-                    InstanceMethod("getVoxel", &Voxelyze::getVoxel)
-                  });
+    DefineClass(env,
+      "Voxelyze", {
+        InstanceMethod("materialCount", & Voxelyze::materialCount),
+        InstanceMethod("addMaterial", & Voxelyze::addMaterial),
+        InstanceMethod("setVoxel", & Voxelyze::setVoxel),
+        InstanceMethod("getVoxelSize", & Voxelyze::getVoxelSize),
+        InstanceMethod("setVoxelSize", & Voxelyze::setVoxelSize),
+        InstanceMethod("voxelCount", & Voxelyze::voxelCount),
+        InstanceMethod("doLinearSolve", & Voxelyze::doLinearSolve),
+        InstanceMethod("doTimeStep", & Voxelyze::doTimeStep),
+        InstanceMethod("linkCount", & Voxelyze::linkCount),
+        InstanceMethod("isFloorEnabled", & Voxelyze::isFloorEnabled),
+        InstanceMethod("enableFloor", & Voxelyze::enableFloor),
+        InstanceMethod("getGravity", & Voxelyze::getGravity),
+        InstanceMethod("setGravity", & Voxelyze::setGravity),
+        InstanceMethod("getVoxel", & Voxelyze::getVoxel)
+      });
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
