@@ -11,5 +11,8 @@
   },
   "scripts": {
     "build": "node-gyp configure --msvs_version=2019 && node-gyp build"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
   }
 }
