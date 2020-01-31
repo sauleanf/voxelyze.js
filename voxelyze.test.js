@@ -113,9 +113,6 @@ describe("voxelyze simulation", () => {
         testSettingForce(0, 0, -1, "negative z axis");
 
         testSettingForce(1, 2, -1, "all the axes");
-
-
-
       });
     });
   });
