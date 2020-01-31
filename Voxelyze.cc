@@ -2,6 +2,7 @@
 #include <iostream>
 #include "voxelHelper.h"
 #include "materialHelper.h"
+#include <string>
 
 Napi::FunctionReference Voxelyze::constructor;
 
@@ -24,7 +25,8 @@ Napi::Object Voxelyze::Init(Napi::Env env, Napi::Object exports) {
         InstanceMethod("enableFloor", & Voxelyze::enableFloor),
         InstanceMethod("getGravity", & Voxelyze::getGravity),
         InstanceMethod("setGravity", & Voxelyze::setGravity),
-        InstanceMethod("getVoxel", & Voxelyze::getVoxel)
+        InstanceMethod("getVoxel", & Voxelyze::getVoxel),
+        InstanceMethod("saveJSON", & Voxelyze::saveJSON)
       });
 
   constructor = Napi::Persistent(func);
@@ -178,4 +180,9 @@ void Voxelyze::getVoxel(const Napi::CallbackInfo& info) {
   setVoxelObjectProperities(voxel, env, voxelCallbackObject);
 
   cb.Call(env.Global(), { voxelCallbackObject });
+}
+
+void Voxelyze::saveJSON(const Napi::CallbackInfo& info) {
+  std::string name = info[0].ToString();
+  voxelyze->saveJSON(name.c_str());
 }

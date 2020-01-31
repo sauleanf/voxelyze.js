@@ -27,6 +27,7 @@ class Voxelyze : public Napi::ObjectWrap<Voxelyze> {
   void setGravity(const Napi::CallbackInfo& info);
   Napi::Value getGravity(const Napi::CallbackInfo& info);
   void getVoxel(const Napi::CallbackInfo& info);
+  void saveJSON(const Napi::CallbackInfo& info);
 
   CVoxelyze* voxelyze;
 };
