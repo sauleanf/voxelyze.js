@@ -120,8 +120,6 @@ Napi::Value Voxelyze::addMaterial(const Napi::CallbackInfo& info) {
     Napi::PropertyDescriptor::Function(env, matObject, "getColor", getColor, napi_property_attributes::napi_default, reinterpret_cast<void*>(mat)),
   });
 
-
-
   return matObject;
 }
 
@@ -184,8 +182,11 @@ void Voxelyze::enableFloor(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
   } else if(!info[0].IsBoolean()) {
     Napi::TypeError::New(info.Env(), "Boolean expected").ThrowAsJavaScriptException();
+  } else if(info.Length() == 0) {
+    voxelyze->enableFloor();
+  } else {
+    voxelyze->enableFloor(info[0].ToBoolean());
   }
-  voxelyze->enableFloor(info[0].ToBoolean());
 }
 
 Napi::Value Voxelyze::isFloorEnabled(const Napi::CallbackInfo& info) {

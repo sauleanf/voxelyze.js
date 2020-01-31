@@ -9,7 +9,7 @@ const linkDirection = {
   Z_NEG: 5
 };
 
-Object.defineProperties(addon.Voxelyze.prototype, {
+/* Object.defineProperties(addon.Voxelyze.prototype, {
   voxelSize: {
     get() {
       return this.getVoxelSize();
@@ -34,9 +34,9 @@ Object.defineProperties(addon.Voxelyze.prototype, {
       this.setGravity(gravity);
     }
   }
-});
+}); */
 
 module.exports = {
-  Voxelyze: addon.Voxelyze,
+  createSimulation: addon.Voxelyze,
   linkDirection: linkDirection
 }
