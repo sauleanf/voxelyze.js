@@ -1,21 +1,23 @@
 const Voxelyze = require("./Voxelyze.js");
 
-const vx = new Voxelyze.createSimulation(.05);
-const pMaterial = vx.addMaterial(100000, 1000);
+//creates simulation
+const vx = new Voxelyze.createSimulation(.005);
 
+//creates material
+const pMaterial = vx.addMaterial(1000000, 1000);
+
+//creates three voxels
 const voxel1 = vx.setVoxel(pMaterial, 0, 0, 0);
 const voxel2 = vx.setVoxel(pMaterial, 1, 0, 0);
 const voxel3 = vx.setVoxel(pMaterial, 2, 0, 0);
 
+// fixes the first voxel so that it doesn't move
 voxel1.setFixedAll();
-voxel3.setForce(0, 0, -2);
-console.log(voxel3.getForce())
-console.log(vx.getVoxelSize())
 
-vx.enableFloor(false);
+// sets a force in the negative z direction on the third voxel
+voxel3.setForce(0, 0, -1);
 
-Array(120).fill(0).forEach((i) => {
+// simulates 100 time steps
+for(let i = 0; i < 100; i++) {
   vx.doTimeStep();
-});
-
-vx.saveJSON("same.json");
+}
