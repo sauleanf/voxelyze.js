@@ -68,6 +68,65 @@ void setFixedAll(const Napi::CallbackInfo& info) {
   voxel->external()->setFixedAll();
 }
 
+Napi::Value displacementMagnitude(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->displacementMagnitude());
+}
+
+Napi::Value angularDisplacementMagnitude(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->angularDisplacementMagnitude());
+}
+
+Napi::Value velocity(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  auto velocity = voxel->velocity();
+
+  Napi::Array velocityArray = Napi::Array::New(info.Env(), 3);
+  velocityArray[(uint32_t) 0] = Napi::Number::New(info.Env(), velocity.x);
+  velocityArray[(uint32_t) 1] = Napi::Number::New(info.Env(), velocity.y);
+  velocityArray[(uint32_t) 2] = Napi::Number::New(info.Env(), velocity.z);
+
+  return velocityArray;
+}
+
+Napi::Value velocityMagnitude(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->velocityMagnitude());
+}
+
+Napi::Value angularVelocity(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  auto angularVelocity = voxel->angularVelocity();
+
+  Napi::Array angularVelocityArray = Napi::Array::New(info.Env(), 3);
+  angularVelocityArray[(uint32_t) 0] = Napi::Number::New(info.Env(), angularVelocity.x);
+  angularVelocityArray[(uint32_t) 1] = Napi::Number::New(info.Env(), angularVelocity.y);
+  angularVelocityArray[(uint32_t) 2] = Napi::Number::New(info.Env(), angularVelocity.z);
+
+  return angularVelocityArray;
+}
+
+Napi::Value angularVelocityMagnitude(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->angularVelocityMagnitude());
+}
+
+Napi::Value kineticEnergy(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->kineticEnergy());
+}
+
+Napi::Value volumetricStrain(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->volumetricStrain());
+}
+
+Napi::Value pressure(const Napi::CallbackInfo& info) {
+  CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
+  return Napi::Number::New(info.Env(), voxel->pressure());
+}
+
 Napi::Value position(const Napi::CallbackInfo& info) {
   CVX_Voxel* voxel = reinterpret_cast<CVX_Voxel*>(info.Data());
   auto position = voxel->position();
@@ -112,7 +171,61 @@ void setVoxelObjectProperities(CVX_Voxel* voxel, Napi::Env& env, Napi::Object& v
       "getVertices",
       getVertices,
       napi_property_attributes::napi_default,
-      reinterpret_cast<void*>(voxel))
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "displacementMagnitude",
+      displacementMagnitude,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "angularDisplacementMagnitude",
+      angularDisplacementMagnitude,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "velocity",
+      velocity,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "velocityMagnitude",
+      velocityMagnitude,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "angularVelocity",
+      angularVelocity,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "angularVelocityMagnitude",
+      angularVelocityMagnitude,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "kineticEnergy",
+      kineticEnergy,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "volumetricStrain",
+      volumetricStrain,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
+    Napi::PropertyDescriptor::Function(env,
+      voxelObject,
+      "pressure",
+      pressure,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(voxel)),
   });
 }
 
