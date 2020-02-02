@@ -33,4 +33,30 @@ Napi::Value getColor(const Napi::CallbackInfo& info) {
   return colorArray;
 }
 
+Napi::Value stress(const Napi::CallbackInfo& info) {
+  float strain = info[0].As<Napi::Number>().FloatValue();
+  CVX_Material* mat = reinterpret_cast<CVX_Material*>(info.Data());
+
+  return Napi::Number::New(info.Env(), mat->stress(strain));
+}
+
+Napi::Value modulus(const Napi::CallbackInfo& info) {
+  float strain = info[0].As<Napi::Number>().FloatValue();
+  CVX_Material* mat = reinterpret_cast<CVX_Material*>(info.Data());
+
+  return Napi::Number::New(info.Env(), mat->modulus(strain));
+}
+
+Napi::Value isModelLinear(const Napi::CallbackInfo& info) {
+  CVX_Material* mat = reinterpret_cast<CVX_Material*>(info.Data());
+
+  return Napi::Boolean::New(info.Env(), mat->isModelLinear());
+}
+
+Napi::Value getYoungsModulus(const Napi::CallbackInfo& info) {
+  CVX_Material* mat = reinterpret_cast<CVX_Material*>(info.Data());
+
+  return Napi::Number::New(info.Env(), mat->youngsModulus());
+}
+
 #endif

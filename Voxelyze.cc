@@ -60,8 +60,48 @@ Napi::Value Voxelyze::addMaterial(const Napi::CallbackInfo& info) {
   Napi::Object matObject = Napi::Object::New(env);
   matObject.Set("index", index);
   matObject.DefineProperties({
-    Napi::PropertyDescriptor::Function(env, matObject, "setColor", setColor, napi_property_attributes::napi_default, reinterpret_cast<void*>(mat)),
-    Napi::PropertyDescriptor::Function(env, matObject, "getColor", getColor, napi_property_attributes::napi_default, reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "setColor",
+      setColor,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "getColor",
+      getColor,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "stress",
+      stress,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "modulus",
+      modulus,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "isModelLinear",
+      isModelLinear,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat)),
+    Napi::PropertyDescriptor::Function(
+      env,
+      matObject,
+      "getYoungsModulus",
+      getYoungsModulus,
+      napi_property_attributes::napi_default,
+      reinterpret_cast<void*>(mat))
   });
 
   return matObject;
