@@ -111,7 +111,7 @@ void Voxelyze::doTimeStep(const Napi::CallbackInfo& info) {
   float dt = -1.0f;
   if(info.Length() == 1) {
     dt = info[0].As<Napi::Number>().FloatValue();
-  } else if(info.Length() == 0) {
+  } else if(info.Length() > 1) {
     Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
   }
 
