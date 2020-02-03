@@ -28,6 +28,10 @@ class Voxelyze : public Napi::ObjectWrap<Voxelyze> {
   Napi::Value getGravity(const Napi::CallbackInfo& info);
   void getVoxel(const Napi::CallbackInfo& info);
   void saveJSON(const Napi::CallbackInfo& info);
+  void enableCollisions(const Napi::CallbackInfo& info);
+  Napi::Value isCollisionsEnabled(const Napi::CallbackInfo& info);
+  void setAmbientTemperature(const Napi::CallbackInfo& info);
+  Napi::Value ambientTemperature(const Napi::CallbackInfo& info);
 
   CVoxelyze* voxelyze;
 };

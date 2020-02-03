@@ -21,3 +21,6 @@ voxel3.setForce(0, 0, -1);
 for(let i = 0; i < 100; i++) {
   vx.doTimeStep();
 }
+
+console.log(vx.setAmbientTemperature(10))
+console.log(vx.ambientTemperature())

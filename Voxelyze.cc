@@ -25,7 +25,11 @@ Napi::Object Voxelyze::Init(Napi::Env env, Napi::Object exports) {
         InstanceMethod("getGravity", & Voxelyze::getGravity),
         InstanceMethod("setGravity", & Voxelyze::setGravity),
         InstanceMethod("getVoxel", & Voxelyze::getVoxel),
-        InstanceMethod("saveJSON", & Voxelyze::saveJSON)
+        InstanceMethod("saveJSON", & Voxelyze::saveJSON),
+        InstanceMethod("enableCollisions", & Voxelyze::enableCollisions),
+        InstanceMethod("isCollisionsEnabled", & Voxelyze::isCollisionsEnabled),
+        InstanceMethod("setAmbientTemperature", & Voxelyze::setAmbientTemperature),
+        InstanceMethod("ambientTemperature", & Voxelyze::ambientTemperature)
       });
 
   constructor = Napi::Persistent(func);
@@ -222,4 +226,44 @@ void Voxelyze::getVoxel(const Napi::CallbackInfo& info) {
 
 void Voxelyze::saveJSON(const Napi::CallbackInfo& info) {
   voxelyze->saveJSON(info[0].As<Napi::String>().Utf8Value().c_str());
+}
+
+void Voxelyze::setAmbientTemperature(const Napi::CallbackInfo& info) {
+  if(info.Length() != 1 && info.Length() != 2) {
+    Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
+  } else if(info.Length() == 1) {
+    if(!info[0].IsNumber()) {
+      Napi::TypeError::New(info.Env(), "Number expected").ThrowAsJavaScriptException();
+    } else {
+      voxelyze->setAmbientTemperature(info[0].As<Napi::Number>().FloatValue());
+    }
+  } else {
+    if(!info[0].IsNumber() && !info[1].IsBoolean()) {
+      Napi::TypeError::New(info.Env(), "Number and Boolean expected").ThrowAsJavaScriptException();
+    } else {
+      voxelyze->setAmbientTemperature(info[0].As<Napi::Number>().FloatValue(), info[1].ToBoolean());
+    }
+  }
+}
+
+Napi::Value Voxelyze::ambientTemperature(const Napi::CallbackInfo& info) {
+  return Napi::Number::New(info.Env(), voxelyze->ambientTemperature());
+}
+
+void Voxelyze::enableCollisions(const Napi::CallbackInfo& info) {
+  if(info.Length() == 0) {
+    voxelyze->enableCollisions();
+  } else if (info.Length() == 1) {
+    if(info[0].IsBoolean()) {
+      voxelyze->enableCollisions(info[1].ToBoolean());
+    } else {
+      Napi::TypeError::New(info.Env(), "Boolean expected").ThrowAsJavaScriptException();
+    }
+  } else {
+    Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
+  }
+}
+
+Napi::Value Voxelyze::isCollisionsEnabled(const Napi::CallbackInfo& info) {
+  return Napi::Boolean::New(info.Env(), voxelyze->isCollisionsEnabled());
 }
