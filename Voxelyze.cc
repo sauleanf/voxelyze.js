@@ -43,7 +43,21 @@ Voxelyze::Voxelyze(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Voxelyze>(
   Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
 
-  this->voxelyze = new CVoxelyze(info[0].As<Napi::Number>().FloatValue());
+  if(info.Length() == 0) {
+    this->voxelyze = new CVoxelyze();
+  } else if(info.Length() == 1) {
+    if(info[0].IsNumber()) {
+      this->voxelyze = new CVoxelyze(info[0].As<Napi::Number>().FloatValue());
+    } else if (info[0].IsString()) {
+      this->voxelyze = new CVoxelyze(info[0].As<Napi::String>().Utf8Value().c_str());
+    } else {
+      Napi::TypeError::New(env, "Use either a number of string as argument")
+      .ThrowAsJavaScriptException();
+    }
+  } else {
+    Napi::TypeError::New(env, "Wrong number of arguments")
+    .ThrowAsJavaScriptException();
+  }
 }
 
 Napi::Value Voxelyze::materialCount(const Napi::CallbackInfo& info) {
@@ -54,7 +68,17 @@ Napi::Value Voxelyze::materialCount(const Napi::CallbackInfo& info) {
 
 Napi::Value Voxelyze::addMaterial(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  //std::string density = info[0].ToString();
+
+  if(info.Length() != 2) {
+    Napi::TypeError::New(env, "Wrong number of arguments")
+    .ThrowAsJavaScriptException();
+    return env.Null();
+  } else if (!info[0].IsNumber() || !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Numbers are expected")
+    .ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
   float youngsModulus = info[0].As<Napi::Number>().FloatValue();
   float density = info[1].As<Napi::Number>().FloatValue();
 
@@ -199,8 +223,9 @@ void Voxelyze::setGravity(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(info.Env(), "Wrong number of arguments").ThrowAsJavaScriptException();
   } else if(!info[0].IsNumber()) {
     Napi::TypeError::New(info.Env(), "Number expected").ThrowAsJavaScriptException();
+  } else {
+    voxelyze->setGravity(info[0].As<Napi::Number>().FloatValue());
   }
-  voxelyze->setGravity(info[0].As<Napi::Number>().FloatValue());
 }
 
 Napi::Value Voxelyze::getGravity(const Napi::CallbackInfo& info) {
@@ -209,23 +234,32 @@ Napi::Value Voxelyze::getGravity(const Napi::CallbackInfo& info) {
 
 void Voxelyze::getVoxel(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  float x = info[0].As<Napi::Number>().FloatValue();
-  float y = info[1].As<Napi::Number>().FloatValue();
-  float z = info[2].As<Napi::Number>().FloatValue();
+  if(info.Length() != 3 || !info[0].IsNumber() || !info[1].IsNumber() || !info[2].IsNumber()) {
+    Napi::TypeError::New(info.Env(), "Three numbers are expected").ThrowAsJavaScriptException();
+  } else {
+    float x = info[0].As<Napi::Number>().FloatValue();
+    float y = info[1].As<Napi::Number>().FloatValue();
+    float z = info[2].As<Napi::Number>().FloatValue();
 
-  Napi::Object voxelCallbackObject = Napi::Object::New(env);
+    Napi::Object voxelCallbackObject = Napi::Object::New(env);
 
-  CVX_Voxel* voxel = voxelyze->voxel(x, y, z);
+    CVX_Voxel* voxel = voxelyze->voxel(x, y, z);
 
-  Napi::Function cb = info[3].As<Napi::Function>();
+    Napi::Function cb = info[3].As<Napi::Function>();
 
-  setVoxelObjectProperities(voxel, env, voxelCallbackObject);
+    setVoxelObjectProperities(voxel, env, voxelCallbackObject);
 
-  cb.Call(env.Global(), { voxelCallbackObject });
+    cb.Call(env.Global(), { voxelCallbackObject });
+  }
 }
 
 void Voxelyze::saveJSON(const Napi::CallbackInfo& info) {
-  voxelyze->saveJSON(info[0].As<Napi::String>().Utf8Value().c_str());
+  if(info[0] && info[0].IsString()) {
+    voxelyze->saveJSON(info[0].As<Napi::String>().Utf8Value().c_str());
+  } else {
+    Napi::TypeError::New(info.Env(), "A string is expected")
+    .ThrowAsJavaScriptException();
+  }
 }
 
 void Voxelyze::setAmbientTemperature(const Napi::CallbackInfo& info) {
