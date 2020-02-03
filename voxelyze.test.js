@@ -3,6 +3,37 @@ const Voxelyze = require("./Voxelyze.js");
 describe("voxelyze simulation", () => {
   let vx;
   let voxelSize = .5
+
+  describe("simulation creation", () => {
+    const defaultVoxelSize = 0.001;
+
+    it("creates a voxelyze simulator with the right voxel size", () => {
+      vx = new Voxelyze.createSimulation(voxelSize);
+      expect(vx.getVoxelSize()).toEqual(voxelSize);
+    });
+
+    it("creates a voxelyze simulator from a string", () => {
+
+    });
+
+    it("creates a voxelyze simulator with the default setting", () => {
+      vx = new Voxelyze.createSimulation();
+      expect(vx.getVoxelSize()).toEqual(defaultVoxelSize);
+    });
+
+    it("raises an exception with more than one argument", () => {
+      expect(() => new Voxelyze.createSimulation(1, 1)).toThrow("Wrong number of arguments");
+    });
+
+    it("raises an exception when an array is passed", () => {
+      expect(() => new Voxelyze.createSimulation([])).toThrow("Use either a number of string as argument");
+    });
+
+    it("raises an exception when an object is passed", () => {
+      expect(() => new Voxelyze.createSimulation({})).toThrow("Use either a number of string as argument");
+    });
+  });
+
   beforeEach(() => {
     vx = new Voxelyze.createSimulation(voxelSize);
   });
