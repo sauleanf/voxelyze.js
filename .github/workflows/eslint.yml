@@ -1,4 +1,4 @@
-name: Deployment Logs Frontend ESLint
+name: ESLint
 
 on:
   push:

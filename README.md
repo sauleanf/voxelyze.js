@@ -1,6 +1,6 @@
 ![voxelyze.js](https://i.imgur.com/895X6SD.png)
 
-[![Actions Status](https://github.com/sauleanf/voxelyze.js/workflows/Deployment%20Logs%20Jest%20Tests/badge.svg)](https://github.com/sauleanf/voxelyze.js/actions)
+[![Actions Status](https://github.com/sauleanf/voxelyze.js/workflows/Jest/badge.svg)](https://github.com/sauleanf/voxelyze.js/actions)
 
 # What is Voxelyze.js?
 

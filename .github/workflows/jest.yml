@@ -1,4 +1,4 @@
-name: Deployment Logs Jest Tests
+name: Jest
 
 on:
   push:
