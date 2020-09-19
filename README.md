@@ -3,7 +3,7 @@
 # What is Voxelyze.js?
 
 Voxelyze.js is a native addon for node.js that allows users to write code for
-the c++ physics simulator voxelyze in javascript.
+the C++ physics simulator voxelyze in javascript.
 
 # How to Use
 
