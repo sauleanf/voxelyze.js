@@ -1,4 +1,4 @@
-var addon = require('bindings')('Voxelyze');
+const addon = require('bindings')('Voxelyze');
 
 const linkDirection = {
   X_POS: 0,
@@ -6,7 +6,7 @@ const linkDirection = {
   Y_POS: 2,
   Y_NEG: 3,
   Z_POS: 4,
-  Z_NEG: 5
+  Z_NEG: 5,
 };
 
 /* Object.defineProperties(addon.Voxelyze.prototype, {
@@ -37,6 +37,6 @@ const linkDirection = {
 }); */
 
 module.exports = {
-  createSimulation: addon.Voxelyze,
-  linkDirection: linkDirection
-}
+  Simulation: addon.Voxelyze,
+  linkDirection,
+};
